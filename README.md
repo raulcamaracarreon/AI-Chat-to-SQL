@@ -60,4 +60,16 @@ OPENAI_API_KEY="sk-proj-xxxxxxxxxxxxxxxx"
 # Modelo de OpenAI
 LLM_MODEL_NAME="gpt-3.5-turbo"
 🚀 UsoEjecuta la aplicación:Bashpython app.py
-Abre el navegador: Ve a http://127.0.0.1:5000.Sube tu CSV: La app detectará automáticamente las columnas.Pregunta: Escribe consultas como:"¿Cuál es el promedio de edad por departamento?""Muestra los 5 productos más vendidos ordenados descendentemente"📂 Estructura del CódigoPara entender cómo funciona la integración local, revisa estos archivos:ArchivoFunción Técnicanlp2sql.pyCore de IA. Inicializa el cliente openai.OpenAI() usando las variables de entorno. Si detecta una URL local, dirige las peticiones a tu máquina en lugar de los servidores de OpenAI.sql_guard.pyFirewall SQL. Analiza la cadena de texto SQL generada por la IA antes de enviarla a la BD. Si detecta palabras clave prohibidas (DROP, INSERT, EXEC), lanza una excepción de seguridad.db.pyGestor de Datos. Maneja la conexión a SQLite usando pd.to_sql con index=False para una carga limpia del CSV en memoria.prompts.pyIngeniería de Prompts. Contiene las instrucciones del sistema (System Prompt) que guían al modelo para actuar como un experto en SQL y adherirse al esquema de la tabla provista.🤝 ContribucionesLas Pull Requests son bienvenidas. Especialmente interesan mejoras en:Soporte para más formatos de archivo (Excel, JSON).Optimización de prompts para modelos locales más pequeños (ej. Phi-3).Visualización de datos (gráficos) basada en los resultados SQL.📄 LicenciaDistribuido bajo la licencia MIT. Ver LICENSE para más información.Desarrollado por Raúl Cámara Carreón
+Abre el navegador: Ve a http://127.0.0.1:5000.
+
+Sube tu CSV: La app detectará automáticamente las columnas.
+
+Pregunta: Escribe consultas como:"¿Cuál es el promedio de edad por departamento?""Muestra los 5 productos más vendidos ordenados descendentemente"
+
+📂 Estructura del CódigoPara entender cómo funciona la integración local, revisa estos archivos:ArchivoFunción Técnicanlp2sql.pyCore de IA. Inicializa el cliente openai.OpenAI() usando las variables de entorno. Si detecta una URL local, dirige las peticiones a tu máquina en lugar de los servidores de OpenAI.sql_guard.pyFirewall SQL. Analiza la cadena de texto SQL generada por la IA antes de enviarla a la BD. Si detecta palabras clave prohibidas (DROP, INSERT, EXEC), lanza una excepción de seguridad.db.pyGestor de Datos. Maneja la conexión a SQLite usando pd.to_sql con index=False para una carga limpia del CSV en memoria.prompts.pyIngeniería de Prompts. Contiene las instrucciones del sistema (System Prompt) que guían al modelo para actuar como un experto en SQL y adherirse al esquema de la tabla provista.
+
+🤝 ContribucionesLas Pull Requests son bienvenidas. Especialmente interesan mejoras en:Soporte para más formatos de archivo (Excel, JSON).Optimización de prompts para modelos locales más pequeños (ej. Phi-3).Visualización de datos (gráficos) basada en los resultados SQL.
+
+📄 LicenciaDistribuido bajo la licencia MIT.
+
+Desarrollado por Raúl Cámara Carreón
