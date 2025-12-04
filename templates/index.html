@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>NL→SQL (CSV → SQLite)</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    function copySQL() {
+      const el = document.getElementById('sql_box');
+      if (!el) return;
+      navigator.clipboard.writeText(el.innerText || el.textContent);
+      const btn = document.getElementById('copy_btn');
+      if (btn) { btn.innerText = '¡Copiado!'; setTimeout(()=>btn.innerText='Copiar SQL', 1500); }
+    }
+  </script>
+</head>
+<body>
+<div class="container">
+  <h1>NL→SQL (CSV → SQLite)</h1>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-wrap">
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <section class="card">
+    <h2>1) Cargar CSV</h2>
+    <form method="post" enctype="multipart/form-data">
+      <label>Archivo CSV:
+        <input type="file" name="csv_file" accept=".csv" required>
+      </label>
+      <label>Nombre de la tabla (opcional):
+        <input type="text" name="table_name" placeholder="data">
+      </label>
+      <label>Modelo (solo OpenAI en este starter):
+        <select name="model_choice">
+          <option value="openai:gpt-4o-mini">openai:gpt-4o-mini</option>
+          <option value="openai:gpt-4.1-mini">openai:gpt-4.1-mini</option>
+        </select>
+      </label>
+      <button type="submit">Cargar</button>
+    </form>
+  </section>
+
+  {% if table_name %}
+  <section class="card">
+    <h2>2) Esquema detectado (para el prompt)</h2>
+    <pre class="schema">{{ schema_text }}</pre>
+  </section>
+
+  <section class="card">
+    <h2>3) Pregunta en lenguaje natural</h2>
+    <form method="post">
+      <textarea name="user_query" rows="3" placeholder="e.g., top 10 categorías por total de ventas en 2023"></textarea>
+      <button type="submit">Generar y ejecutar SQL</button>
+    </form>
+  </section>
+
+  {% if last_sql %}
+  <section class="card">
+    <h3>SQL generado</h3>
+    <pre id="sql_box" class="sql">{{ last_sql }}</pre>
+    <button id="copy_btn" onclick="copySQL()">Copiar SQL</button>
+  </section>
+  {% endif %}
+
+  {% if result_html %}
+  <section class="card">
+    <h3>Resultados</h3>
+    <div class="table-wrap">{{ result_html|safe }}</div>
+  </section>
+  {% endif %}
+  {% endif %}
+</div>
+</body>
+</html>
